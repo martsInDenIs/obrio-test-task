@@ -1,4 +1,5 @@
 import {
+  Body,
   Controller,
   Get,
   Post,
@@ -6,13 +7,20 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { LoadFilesBodyDTO } from './dtos/load.files.body.dto';
+import { FilesService } from './files.service';
 
 @UsePipes(new ValidationPipe({ forbidNonWhitelisted: true }))
 @Controller('files')
 export class FilesController {
+  constructor(private readonly service: FilesService) {}
+
   @Get('list')
-  list(body: LoadFilesBodyDTO) {}
+  list() {
+    return this.service.get();
+  }
 
   @Post('load')
-  loadFiles() {}
+  loadFiles(@Body() { filesInfo }: LoadFilesBodyDTO) {
+    return this.service.loadFiles(filesInfo);
+  }
 }
