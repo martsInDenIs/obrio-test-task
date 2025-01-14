@@ -1,1 +1,2 @@
-1. Add pagination to the load files endpoint
+1. Додати пагінацію до GET запиту на список файлів
+2. Для DatabaseModule спробувати ізолювати доступ до PrismaEntities в залежності від модуля, який імпортує та використовує DatabaseService
