@@ -4,6 +4,7 @@ import { FilesModule } from './files/files.module';
 import { DatabaseModule } from './database/database.module';
 import { GoogleDriveModule } from './google-drive/google-drive.module';
 import { GoogleAuthModule } from './google-auth/google-auth.module';
+import { UploadFilesModule } from './upload-files/upload-files.module';
 
 @Module({
   providers: [],
@@ -14,6 +15,7 @@ import { GoogleAuthModule } from './google-auth/google-auth.module';
     DatabaseModule,
     GoogleDriveModule,
     GoogleAuthModule,
+    UploadFilesModule,
   ],
 })
 export class AppModule {}

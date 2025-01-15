@@ -20,8 +20,8 @@ export class GoogleAuthController {
   @UsePipes(ValidationPipe)
   @Get('code')
   async exchangeCodeToToken(@Query() { code }: GetCodeQueryDTO) {
-    await this.service.setAuthToken(code);
+    await this.service.setupClient(code);
 
-    return 'Success!';
+    return 'Access was successfully granted!';
   }
 }
