@@ -2,15 +2,12 @@ import {
   Controller,
   Get,
   Query,
-  UseGuards,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
 import { GoogleAuthService } from './google-auth.service';
 import { GetCodeQueryDTO } from './dto/get-code.query.dto';
-import { HasAuthTokensGuard } from './guard/has.auth.tokens.guard';
 
-@UseGuards(HasAuthTokensGuard)
 @Controller('google-auth')
 export class GoogleAuthController {
   constructor(private readonly service: GoogleAuthService) {}
