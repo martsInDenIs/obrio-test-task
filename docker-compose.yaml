@@ -4,14 +4,36 @@ services:
   postgres:
     container_name: 'obrio-test-task-db'
     image: postgres:14-alpine
-    ports:
-      - 5432:5432
+    networks:
+      - private_network
     volumes:
       - obrio-db-volume:/var/lib/postgresql/data
     environment:
       - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    restart: always
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}']
+      interval: 5s
+  backend:
+    entrypoint: ['sh', '-c', 'npx prisma migrate deploy && npm run start']
+    container_name: 'obrio-be'
+    build: .
+    environment:
+      - PRISMA_DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}?schema=public
+    ports:
+      - ${PORT}:3000
+    networks:
+      - private_network
+    depends_on:
+      postgres:
+        condition: service_healthy
+    command: ['npx', 'prisma', 'migrate', 'deploy']
+
+networks:
+  private_network:
+    driver: bridge
 
 volumes:
   obrio-db-volume:
