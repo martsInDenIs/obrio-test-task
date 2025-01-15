@@ -5,11 +5,13 @@ import { DatabaseModule } from './database/database.module';
 import { GoogleDriveModule } from './google-drive/google-drive.module';
 import { GoogleAuthModule } from './google-auth/google-auth.module';
 import { UploadFilesModule } from './upload-files/upload-files.module';
+import { LoggerModule } from 'nestjs-pino';
 
 @Module({
   providers: [],
   controllers: [],
   imports: [
+    LoggerModule.forRoot(),
     ConfigModule.forRoot({ isGlobal: true }),
     FilesModule,
     DatabaseModule,

@@ -27,6 +27,8 @@
     "class-validator": "^0.14.1",
     "google-auth-library": "^9.15.0",
     "mime-types": "^2.1.35",
+    "nestjs-pino": "^4.2.0",
+    "pino-http": "^10.4.0",
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.1"
   },

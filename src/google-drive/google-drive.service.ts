@@ -39,13 +39,11 @@ export class GoogleDriveService {
   }
 
   async create({ fileStream, name }: CreateParams) {
-    const mimeType = lookup(name) || undefined;
-
     const fileInfo = await this.getInstance().files.create({
-      fields: 'id, webViewLink',
+      fields: 'id, webViewLink, name',
       requestBody: {
         name,
-        mimeType,
+        mimeType: lookup(name) || undefined,
       },
       media: {
         body: fileStream,
@@ -58,7 +56,7 @@ export class GoogleDriveService {
       role: 'reader',
     });
 
-    return fileInfo.data.webViewLink;
+    return { link: fileInfo.data.webViewLink, name: fileInfo.data.name };
   }
 
   fileList() {

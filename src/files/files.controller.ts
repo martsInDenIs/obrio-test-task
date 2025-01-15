@@ -20,7 +20,7 @@ export class FilesController {
   }
 
   @Post('load')
-  loadFiles(@Body() { filesInfo }: LoadFilesBodyDTO) {
-    return this.service.loadFiles(filesInfo);
+  loadFiles(@Body() { urls }: LoadFilesBodyDTO) {
+    return this.service.loadFiles(urls);
   }
 }

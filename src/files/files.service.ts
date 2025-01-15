@@ -1,11 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { DatabaseService } from 'src/database/database.service';
-import { FileInfoDTO } from './dtos/load.files.body.dto';
 import { UploadFilesService } from 'src/upload-files/upload-files.service';
 import { GoogleDriveService } from 'src/google-drive/google-drive.service';
-
+import { Logger } from '@nestjs/common';
 @Injectable()
 export class FilesService {
+  private readonly logger = new Logger(FilesService.name);
+
   constructor(
     private readonly db: DatabaseService,
     private readonly uploadService: UploadFilesService,
@@ -16,21 +17,21 @@ export class FilesService {
     return this.db.file.findMany();
   }
 
-  async loadFiles(filesInfo: FileInfoDTO[]) {
-    return filesInfo.forEach(async (info) => {
+  async loadFiles(urls: string[]) {
+    return urls.forEach(async (url) => {
       try {
-        const res = await this.uploadService.getFileStream(info.url);
+        const res = await this.uploadService.getFileStream(url);
 
-        const gdriveLink = await this.googleDrive.create({
+        const { link, name } = await this.googleDrive.create({
           fileStream: res.data,
-          name: info.name,
+          name: url.substring(url.lastIndexOf('/') + 1),
         });
 
         await this.db.file.create({
-          data: { name: info.name, url: gdriveLink },
+          data: { name, url: link },
         });
       } catch (err) {
-        throw new Error(err);
+        this.logger.error(err);
       }
     });
   }
