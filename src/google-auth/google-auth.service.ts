@@ -32,9 +32,10 @@ export class GoogleAuthService {
   private preserveCredentials(tokens: Credentials): Credentials {
     // Manual refreshing of access token will delete refresh_token from file, because refresh_token can be granted only once.
     // The idea - refresh only that data, that were in the response
-    const oldTokens = JSON.parse(
-      readFileSync(CREDENTIALS_FILE_NAME).toString(),
-    );
+    const oldTokens = existsSync(CREDENTIALS_FILE_NAME)
+      ? JSON.parse(readFileSync(CREDENTIALS_FILE_NAME).toString())
+      : {};
+
     const newTokens: Credentials = { ...oldTokens, ...tokens };
 
     writeFileSync(CREDENTIALS_FILE_NAME, JSON.stringify(newTokens));
@@ -55,6 +56,7 @@ export class GoogleAuthService {
         'Client tokens hasn`t been set up. Please do it before use client',
       );
     }
+
     return this.oAuth2Client;
   }
 

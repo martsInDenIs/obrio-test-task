@@ -14,7 +14,7 @@ export class FilesService {
   ) {}
 
   get() {
-    return this.db.file.findMany();
+    return this.db.file.findMany({ omit: { id: true } });
   }
 
   async loadFiles(urls: string[]) {
