@@ -1,13 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { drive, drive_v3 } from '@googleapis/drive';
 import { GoogleAuthService } from 'src/google-auth/google-auth.service';
-import { Stream } from 'stream';
 import { lookup } from 'mime-types';
-
-type CreateParams = {
-  fileStream: Stream;
-  name: string;
-};
+import { CreateParams } from './google-drive.types';
 
 @Injectable()
 export class GoogleDriveService {
